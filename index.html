@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartPaws Welcome</title>
+    <!-- AI-assisted generation used as per university guidelines -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="game-container" class="game-container">
+        <!-- Theme 5 - background music audio tag -->
+        <audio id="bg-music" src="assets/Meow.mp3" loop preload="auto"></audio>
+
+        <!-- falling hearts animation in the background -->
+        <div id="hearts-layer" class="background-hearts"
+            style="position: absolute; width: 100vw; height: 100vh; top: 0; left: 0; z-index: 1; pointer-events: none; overflow: hidden;">
+        </div>
+
+        <!-- the back arrow for all the menus -->
+        <button id="global-back-btn" class="back-btn hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </button>
+
+        <!-- Top left mute button -->
+        <button id="global-mute-btn" class="mute-btn hidden">
+            😺
+        </button>
+
+        <!-- TITLE SCREEN -->
+        <div id="start-screen" class="screen-content">
+            <div class="ui-badge title-badge">HeartPaws</div>
+            <div class="mascot-container" style="display: flex; justify-content: center; align-items: flex-end;">
+                <img class="mascot-left" src="assets/cat.png" alt="Cat Mascot" style="max-width: 350px;">
+            </div>
+            <button id="tap-to-play-btn" class="action-button red-pill">Tap To Play</button>
+        </div>
+
+        <!-- --- LOGIN MENU STUFF --- -->
+        <div id="login-screen" class="screen-content hidden">
+            <div class="ui-badge title-badge">HeartPaws</div>
+            <div class="login-modal">
+                <div class="modal-badge">Select Level</div>
+                <h2>Welcome Back!</h2>
+                <form id="login-form">
+                    <input type="text" id="username" placeholder="Username or Email" required>
+                    <input type="text" id="paws-port" placeholder="Enter your Paws-port ID">
+                    <input type="password" id="password" placeholder="Password ....." required>
+                    <button type="submit" class="action-button red-pill">Let's Play!</button>
+                </form>
+                <div class="modal-links">
+                    <a href="#">Forgot Password?</a>
+                    <a href="#" id="link-create-account">Create Account</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- --- CREATE ACCOUNT SCREEN --- -->
+        <div id="create-account-screen" class="screen-content hidden">
+            <div class="ui-badge title-badge">HeartPaws</div>
+            <div class="register-modal">
+                <div class="modal-badge">Create Account</div>
+
+                <div class="reg-left-panel">
+                    <h3>Join the Fun!</h3>
+                    <p>Create your very own Paws-port to save your progress, secure your virtual identity, and much
+                        more.</p>
+                    <img src="assets/cat.png" alt="Happy Cat" class="reg-mascot">
+                </div>
+
+                <div class="reg-right-panel">
+                    <h2>Welcome!</h2>
+                    <form id="create-account-form" class="reg-form">
+                        <input type="text" id="reg-username" placeholder="Username" required>
+                        <input type="password" id="reg-password" placeholder="Password ....." required>
+                        <input type="password" id="reg-password-confirm" placeholder="Re-enter Password ....." required>
+                        <button type="submit" class="action-button red-pill">Save to Cloud</button>
+
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+
+                        <!-- Google login stuff - disabling for now so it doesn't break -->
+                        <button type="button" id="btn-google-auth" class="google-btn">
+                            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo"
+                                class="google-icon">
+                            Sign in with Google
+                        </button>
+                    </form>
+                    <div class="modal-links">
+                        <a href="#" id="link-back-to-login">Already have an account? Log In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- --- MAIN MENU SCREEN --- -->
+        <div id="main-menu-screen" class="screen-content hidden">
+            <div class="ui-badge title-badge main-menu-title">HeartPaws</div>
+            <div class="main-menu-frame">
+                <div class="main-menu-inner">
+                    <h2 id="main-menu-greeting"
+                        style="color: var(--text-dark); margin-top: 0; margin-bottom: 20px; font-size: 32px; font-weight: 800;">
+                        Welcome Back!</h2>
+                    <button id="btn-continue" class="menu-button red-pill hidden"
+                        style="background: linear-gradient(145deg, var(--cute-yellow), var(--cute-orange)); padding: 18px 0; margin-bottom: 5px; font-size: 24px; box-shadow: 0 8px 15px rgba(255, 159, 67, 0.4);">Continue</button>
+                    <button id="btn-new-game" class="menu-button red-pill">New Game</button>
+                    <button id="btn-levels" class="menu-button red-pill">Levels</button>
+                    <button id="btn-options" class="menu-button red-pill">Options</button>
+                    <button id="btn-how-to-play" class="menu-button red-pill">How To Play</button>
+                    <button id="btn-exit" class="menu-button red-pill">Exit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- --- LEVELS MENU SCREEN --- -->
+        <div id="levels-screen" class="screen-content hidden">
+            <div class="ui-badge title-badge main-menu-title">HeartPaws</div>
+            <div class="levels-modal">
+                <div class="modal-badge">Select Level</div>
+                <div class="levels-grid" id="levels-grid-container">
+                    <!-- JS puts the buttons here -->
+                </div>
+                <button id="btn-back-to-main" class="action-button red-pill back-to-menu-btn">Back</button>
+            </div>
+        </div>
+
+        <!-- --- OPTIONS MENU SCREEN --- -->
+        <div id="options-screen" class="screen-content hidden">
+            <div class="ui-badge title-badge main-menu-title">HeartPaws</div>
+
+            <!-- the first window they see in options -->
+            <div id="options-main-modal" class="options-modal">
+                <div class="modal-badge">Options</div>
+                <div class="options-menu-inner">
+                    <button id="btn-opt-audio" class="menu-button red-pill">Audio</button>
+                    <button id="btn-opt-controls" class="menu-button red-pill">Controls</button>
+                    <button id="btn-opt-difficulty" class="menu-button red-pill">Difficulty</button>
+                </div>
+                <button id="btn-back-from-options" class="action-button red-pill back-to-menu-btn">Back</button>
+            </div>
+
+            <!-- the window for audio settings -->
+            <div id="options-audio-modal" class="options-modal hidden">
+                <div class="modal-badge">Audio</div>
+                <div class="options-menu-inner">
+                    <div class="audio-settings-container"
+                        style="background: var(--light-beige); padding: 15px; border-radius: 12px; border: 4px solid var(--cute-orange); text-align: center; margin-bottom: 10px; width: 100%;">
+                        <span
+                            style="font-size: 16px; color: var(--dark-brown); font-weight: bold; display: block; margin-bottom: 15px;">🎵
+                            Meow Sound Volume</span>
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5"
+                            class="custom-slider" style="width: 80%;">
+                    </div>
+                    <div class="audio-settings-container"
+                        style="background: var(--light-beige); padding: 15px; border-radius: 12px; border: 4px solid var(--cute-orange); text-align: center; margin-bottom: 10px; width: 100%;">
+                        <span
+                            style="font-size: 16px; color: var(--dark-brown); font-weight: bold; display: block; margin-bottom: 15px;">🎵
+                            Happy Cat Sound Volume</span>
+                        <input type="range" id="happy-cat-volume-slider" min="0" max="1" step="0.01" value="0.5"
+                            class="custom-slider" style="width: 80%;">
+                    </div>
+                </div>
+                <button id="btn-back-from-audio" class="action-button red-pill back-to-menu-btn">Back</button>
+            </div>
+
+            <!-- the window for changing keys -->
+            <div id="options-controls-modal" class="options-modal hidden">
+                <div class="modal-badge">Controls</div>
+                <div class="options-menu-inner">
+                    <p style="text-align: center; font-family: 'Poppins'; font-weight: bold; font-size: 16px;">Click a
+                        button to remap it!</p>
+                    <div class="controls-grid"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;">
+                        <div class="control-row"><span class="control-label">Up:</span> <button id="btn-bind-up"
+                                class="bind-btn">ArrowUp</button></div>
+                        <div class="control-row"><span class="control-label">Down:</span> <button id="btn-bind-down"
+                                class="bind-btn">ArrowDown</button></div>
+                        <div class="control-row"><span class="control-label">Left:</span> <button id="btn-bind-left"
+                                class="bind-btn">ArrowLeft</button></div>
+                        <div class="control-row"><span class="control-label">Right:</span> <button id="btn-bind-right"
+                                class="bind-btn">ArrowRight</button></div>
+                    </div>
+                </div>
+                <button id="btn-back-from-controls" class="action-button red-pill back-to-menu-btn">Back</button>
+            </div>
+
+            <!-- the window for difficulty -->
+            <div id="options-difficulty-modal" class="options-modal hidden">
+                <div class="modal-badge">Difficulty</div>
+                <div class="options-menu-inner">
+                    <button id="btn-diff-easy" class="menu-button red-pill diff-btn">Easy</button>
+                    <button id="btn-diff-medium" class="menu-button red-pill diff-btn">Medium</button>
+                    <button id="btn-diff-hard" class="menu-button red-pill diff-btn">Hard</button>
+                </div>
+                <button id="btn-back-from-difficulty" class="action-button red-pill back-to-menu-btn">Back</button>
+            </div>
+        </div>
+
+        <!-- --- HOW TO PLAY BUBBLE --- -->
+        <div id="how-to-play-screen" class="screen-content hidden">
+            <div class="ui-badge title-badge main-menu-title">HeartPaws</div>
+            <div class="how-to-play-modal">
+                <div class="modal-badge">How To Play</div>
+
+                <div class="instructions-content">
+                    <div class="instructions-text">
+                        <p>Guide the kitty to hearts!</p>
+                        <p>Push the blocks to clear a path.</p>
+                        <p>Reach all the hearts to win!</p>
+                        <p>Be careful not to get stuck! ❤️</p>
+                    </div>
+                    <div class="instructions-graphics">
+                        <div class="graphic-item">❤️</div>
+                        <div class="graphic-item">🟦 🟦</div>
+                        <div class="graphic-item">⬅️ 🐈</div>
+                    </div>
+                </div>
+
+                <button id="btn-back-from-how-to-play" class="action-button red-pill back-to-menu-btn">Back</button>
+            </div>
+        </div>
+
+        <!-- warning if they try to quit -->
+        <div id="exit-confirm-popup" class="popup-overlay hidden">
+            <div class="confirm-modal">
+                <div class="modal-badge">Exit Game</div>
+                <h2>Are you sure?</h2>
+                <div class="confirm-buttons">
+                    <button id="btn-confirm-cancel" class="action-button grey-pill">Cancel</button>
+                    <button id="btn-confirm-exit" class="action-button red-pill">Exit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- warning if they restart everything -->
+        <div id="new-game-confirm-popup" class="popup-overlay hidden">
+            <div class="confirm-modal">
+                <div class="modal-badge">New Game</div>
+                <h2>Start a New Game?</h2>
+                <p style="color: var(--dark-brown); margin: 0 0 20px 0;">This will start you from Level 1.</p>
+                <div class="confirm-buttons">
+                    <button id="btn-new-game-cancel" class="action-button grey-pill">Cancel</button>
+                    <button id="btn-new-game-confirm" class="action-button red-pill">Ok</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- warning if they go back to menu -->
+        <div id="main-menu-confirm-popup" class="popup-overlay hidden">
+            <div class="confirm-modal">
+                <div class="modal-badge">Warning</div>
+                <h2>Return to Main Menu?</h2>
+                <p style="color: var(--dark-brown); margin: 0 0 20px 0;">All progress on this level will be lost.</p>
+                <div class="confirm-buttons">
+                    <button id="btn-main-menu-cancel" class="action-button grey-pill">Cancel</button>
+                    <button id="btn-main-menu-confirm" class="action-button red-pill">Ok</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- pausing the game -->
+        <div id="pause-menu-popup" class="popup-overlay hidden">
+            <div class="confirm-modal">
+                <div class="modal-badge">Paused</div>
+                <h2>Game Paused</h2>
+                <div class="confirm-buttons">
+                    <button id="btn-pause-restart" class="action-button grey-pill" style="font-size: 16px;">Restart
+                        Level</button>
+                    <button id="btn-pause-continue" class="action-button red-pill"
+                        style="font-size: 16px;">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- when they beat a level -->
+        <div id="level-complete-popup" class="popup-overlay hidden">
+            <div class="confirm-modal">
+                <div class="modal-badge">Level Complete!</div>
+                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                    <img src="assets/Kittu.png" alt="Happy Mascot"
+                        style="height: 120px; animation: mascot-jump 2s infinite cubic-bezier(0.28, 0.84, 0.42, 1); transform-origin: bottom center;">
+                </div>
+                <h2 style="font-size: 28px;">Paw-some Job!</h2>
+                <p style="color: var(--dark-brown); font-size: 18px; margin: 0 0 20px 0;">You finished the level in
+                    <strong id="complete-moves-text">0</strong> moves!
+                </p>
+                <div class="confirm-buttons">
+                    <button id="btn-complete-main-menu" class="action-button grey-pill">Main Menu</button>
+                    <button id="btn-complete-next-level" class="action-button red-pill">Next Level</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- when the timer runs out -->
+        <div id="game-over-popup" class="popup-overlay hidden">
+            <div class="confirm-modal" style="width: 450px;">
+                <div class="modal-badge" style="background: var(--primary-red);">Time Up!</div>
+                <h2 style="font-size: 28px; color: var(--primary-red); margin-bottom: 5px;">Your time is up</h2>
+
+                <div class="confirm-buttons"
+                    style="display: flex; flex-direction: column; gap: 10px; align-items: center; margin-top: 20px;">
+                    <button id="btn-restart-level" class="action-button red-pill"
+                        style="width: 250px; margin: 0; font-size: 18px;">Restart Level</button>
+                    <button id="btn-game-over-main-menu" class="action-button grey-pill"
+                        style="width: 250px; margin: 0; font-size: 18px;">Main Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Theme 6 - Rescue minigame stuff -->
+        <div id="rescue-modal" class="popup-overlay hidden">
+            <div class="confirm-modal" style="width: 550px; padding: 30px;">
+                <div class="modal-badge">Rescue Challenge</div>
+                <h2 style="font-size: 26px;">Count the Hearts!</h2>
+                <div
+                    style="text-align: center; margin-bottom: 20px; min-height: 150px; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 10px; border: 4px solid var(--cute-orange);">
+                    <img id="rescue-image" src="" alt="Count Hearts"
+                        style="max-width: 100%; max-height: 300px; display: none;">
+                    <div id="rescue-loading" style="font-size: 20px; color: var(--text-dark); font-weight: bold;">
+                        Loading...</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div style="font-size: 24px; font-weight: bold; color: #ff4757;" id="rescue-timer">Time: --</div>
+                    <input type="number" id="rescue-answer" placeholder="Enter number..."
+                        style="width: 150px; text-align: center; font-size: 20px; padding: 10px; border-radius: 10px; border: 3px solid var(--cute-orange); outline: none;">
+                    <button id="btn-rescue-submit" class="action-button red-pill"
+                        style="margin-bottom: 0; padding: 10px 20px; font-size: 18px;">Submit</button>
+                </div>
+                <p id="rescue-message" style="color: #ff4757; font-weight: bold; height: 24px; margin: 0;"></p>
+            </div>
+        </div>
+
+        <!-- --- GAME PLAY SCREEN --- -->
+        <div id="game-play-screen" class="screen-content hidden">
+            <!-- making sure the moves and timer float over the game -->
+            <div id="moves-counter" class="ui-pill blue-pill"
+                style="position: absolute; bottom: 80px; left: 20px; z-index: 20; display: flex; align-items: center; justify-content: center; width: 140px;">
+                Moves: 0</div>
+
+            <div id="timer-display" class="ui-pill"
+                style="position: absolute; bottom: 20px; left: 20px; z-index: 20; display: flex; align-items: center; justify-content: center; background: white; color: #ff4757; border-color: #ff4757; width: 140px;"
+                class="hidden">
+                ∞</div>
+
+            <div class="game-top-bar">
+                <!-- Spacer to keep title centered -->
+                <div class="ui-badge title-badge main-menu-title">HeartPaws</div>
+                <div class="game-controls"
+                    style="display: flex; gap: 10px; align-items: center; flex: 1; justify-content: flex-end;">
+                    <button id="btn-pause" class="icon-button white-circle">II</button>
+                    <button id="btn-close" class="ui-pill red-pill"
+                        style="font-size: 16px; padding: 8px 20px; font-weight: bold; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer;">Main
+                        Menu</button>
+                </div>
+            </div>
+
+            <div class="game-board-container">
+                <div id="game-grid" class="game-grid">
+                    <!-- JS puts the grid here -->
+                </div>
+            </div>
+
+            <div class="game-bottom-bar" style="display: flex; gap: 15px; align-items: center;">
+                <button id="btn-rescue" class="action-button red-pill rescue-btn">Rescue</button>
+                <button id="btn-backward" class="action-button blue-pill hidden"
+                    style="margin: 0; padding: 10px 30px; border-radius: 50px; font-size: 20px; cursor: pointer;">Backward:
+                    0</button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="game.js"></script>
+</body>
+
+</html>
