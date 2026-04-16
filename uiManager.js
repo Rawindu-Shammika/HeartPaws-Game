@@ -15,7 +15,7 @@ export function showMainMenu() {
     let displayName = localStorage.getItem('paws_display_name') || 'Friend';
     if (displayName.includes('@')) displayName = displayName.split('@')[0];
 
-    // Theme 4 - Mapping encrypted Cloud UID to a user-friendly Virtual Identity for UI cohesion.
+    // Theme 4 - Mapping encrypted Cloud UID to a user friendly Virtual Identity for UI cohesion.
     const greeting = document.getElementById('main-menu-greeting');
     if (greeting) greeting.innerText = `Welcome Back, ${displayName}!`;
 

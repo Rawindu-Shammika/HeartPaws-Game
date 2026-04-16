@@ -29,12 +29,13 @@
         </button>
 
         <!-- Top left mute button -->
-        <button id="global-mute-btn" class="mute-btn hidden">
+        <button id="global-mute-btn" class="mute-btn cute-mute-btn hidden">
             😺
         </button>
 
         <!-- TITLE SCREEN -->
         <div id="start-screen" class="screen-content">
+            <button class="mute-btn cute-mute-btn">😺</button>
             <div class="ui-badge title-badge">HeartPaws</div>
             <div class="mascot-container" style="display: flex; justify-content: center; align-items: flex-end;">
                 <img class="mascot-left" src="assets/cat.png" alt="Cat Mascot" style="max-width: 350px;">
@@ -44,6 +45,7 @@
 
         <!-- --- LOGIN MENU STUFF --- -->
         <div id="login-screen" class="screen-content hidden">
+            <button class="mute-btn cute-mute-btn">😺</button>
             <div class="ui-badge title-badge">HeartPaws</div>
             <div class="login-modal">
                 <div class="modal-badge">Select Level</div>
@@ -55,7 +57,7 @@
                     <button type="submit" class="action-button red-pill">Let's Play!</button>
                 </form>
                 <div class="modal-links">
-                    <a href="#">Forgot Password?</a>
+                    <a href="#" id="link-forgot-password">Forgot Password?</a>
                     <a href="#" id="link-create-account">Create Account</a>
                 </div>
             </div>
@@ -369,9 +371,29 @@
 
             <div class="game-bottom-bar" style="display: flex; gap: 15px; align-items: center;">
                 <button id="btn-rescue" class="action-button red-pill rescue-btn">Rescue</button>
+                <button id="cat-button" class="action-button rescue-btn"
+                    style="background-color: #87CEEB; color: white; border: none; box-shadow: 0 6px 0 #5c9bb0, 0 10px 15px rgba(0, 0, 0, 0.4); text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); font-family: 'Quicksand', 'Fredoka', sans-serif; border-radius: 50px; transition: transform 0.2s, box-shadow 0.2s, filter 0.2s; cursor: pointer;"
+                    onmouseover="this.style.transform='translateY(-3px)'; this.style.filter='brightness(1.1)';"
+                    onmouseout="this.style.transform='none'; this.style.filter='none';">Give me a cat</button>
                 <button id="btn-backward" class="action-button blue-pill hidden"
                     style="margin: 0; padding: 10px 30px; border-radius: 50px; font-size: 20px; cursor: pointer;">Backward:
                     0</button>
+            </div>
+        </div>
+
+        <!-- Cat API Modal -->
+        <div id="cat-modal" class="popup-overlay hidden">
+            <div class="confirm-modal" style="width: 500px; padding: 30px;">
+                <div class="modal-badge" style="background-color: #87CEEB;">Meow!</div>
+                <h2 style="font-size: 26px;">Here is your cat:</h2>
+                <div
+                    style="text-align: center; margin-bottom: 20px; min-height: 250px; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 10px; border: 4px solid #87CEEB;">
+                    <img id="cat-image" src="" alt="A cute cat"
+                        style="max-width: 100%; max-height: 300px; display: none; border-radius: 5px;">
+                    <div id="cat-loading" style="font-size: 20px; font-weight: bold;">Loading...</div>
+                </div>
+                <button id="btn-cat-back" class="action-button red-pill" style="margin: 0; font-size: 18px;">Back to
+                    Game</button>
             </div>
         </div>
     </div>

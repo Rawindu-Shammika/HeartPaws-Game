@@ -4,8 +4,8 @@
 import { gameState, updateGameState, highestUnlockedLevel } from './gameState.js';
 import { renderFallingHearts, showMainMenu, updateMovesDisplay, updateBackwardButton, renderGrid, showDifficultyMessage, updateTimerDisplay } from './uiManager.js';
 import { loadLevel, movePlayer, TimerService } from './gameEngine.js';
-import { loginUser, registerUser, signInWithGoogle, saveVirtualIdentity } from './authManager.js';
-import { fetchRescueChallenge } from './apiService.js';
+import { loginUser, registerUser, resetPassword, signInWithGoogle, saveVirtualIdentity } from './authManager.js';
+import { fetchRescueChallenge, fetchCataasImage } from './apiService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Start falling hearts when they load the page
@@ -103,6 +103,36 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginPassword = document.getElementById('password').value;
         loginUser(loginIdentifier, loginPassword);
     });
+
+    // Forgot Password logic
+    const linkForgotPassword = document.getElementById('link-forgot-password');
+    if (linkForgotPassword) {
+        linkForgotPassword.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const usernameInput = document.getElementById('username').value.trim();
+            if (!usernameInput) {
+                alert("Please enter your email address first.");
+                return;
+            }
+            try {
+                await resetPassword(usernameInput);
+                const toast = document.createElement('div');
+                toast.className = 'toast-message';
+                toast.innerText = 'Reset link sent! Check your inbox.';
+                toast.style.backgroundColor = '#87CEEB';
+                toast.style.color = 'white';
+                document.body.appendChild(toast);
+                void toast.offsetWidth;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 500);
+                }, 3000);
+            } catch (error) {
+                alert("Failed to send reset link: " + error.message);
+            }
+        });
+    }
 
     document.getElementById('create-account-form').addEventListener('submit', (e) => {
         e.preventDefault();
@@ -267,6 +297,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.currentWinAudio.currentTime = 0;
                 this.currentWinAudio = null;
             }
+        },
+        toggleMute: function () {
+            const newState = !gameState.isMuted;
+            updateGameState({ isMuted: newState });
+
+            const muteBtns = document.querySelectorAll('.cute-mute-btn');
+            muteBtns.forEach(b => {
+                if (newState) {
+                    b.innerText = '😾';
+                    b.style.background = '#ccc';
+                } else {
+                    b.innerText = '😺';
+                    b.style.background = 'var(--light-beige)';
+                }
+            });
+
+            if (newState) {
+                this.pauseBgMusic();
+            } else {
+                this.playBgMusic();
+            }
         }
     };
 
@@ -282,24 +333,13 @@ document.addEventListener('DOMContentLoaded', () => {
         AudioService.playBgMusic();
     }, { once: true });
 
-    // Top left mute button
-    const muteBtn = document.getElementById('global-mute-btn');
-    if (muteBtn) {
-        muteBtn.addEventListener('click', () => {
-            const newState = !gameState.isMuted;
-            updateGameState({ isMuted: newState });
-
-            if (newState) {
-                AudioService.pauseBgMusic();
-                muteBtn.innerText = '😾';
-                muteBtn.style.background = '#ccc';
-            } else {
-                AudioService.playBgMusic();
-                muteBtn.innerText = '😺';
-                muteBtn.style.background = 'var(--light-beige)';
-            }
+    // Theme 1: UI Consistency - Ensuring global access to Audio Services across all distributed modules.
+    const muteBtns = document.querySelectorAll('.cute-mute-btn');
+    muteBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            AudioService.toggleMute();
         });
-    }
+    });
 
     // Difficulty buttons - easy is 2m, med is 1m, hard is 30s
     const diffButtons = {
@@ -621,6 +661,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 msg.innerText = "Incorrect! Try again.";
                 msg.style.color = "#ff4757";
             }
+        });
+    }
+
+    const btnCat = document.getElementById('cat-button');
+    if (btnCat) {
+        btnCat.addEventListener('click', async () => {
+            updateGameState({ gameActive: false });
+            const catModal = document.getElementById('cat-modal');
+            const catImg = document.getElementById('cat-image');
+            const catLoading = document.getElementById('cat-loading');
+
+            catModal.classList.remove('hidden');
+            catImg.style.display = 'none';
+            catLoading.style.display = 'block';
+            catLoading.innerText = 'Loading...';
+
+            try {
+                const imgUrl = await fetchCataasImage();
+                catImg.src = imgUrl;
+                catImg.onload = () => {
+                    catLoading.style.display = 'none';
+                    catImg.style.display = 'block';
+                };
+            } catch (err) {
+                catLoading.innerText = 'Error loading cat :(';
+                setTimeout(() => {
+                    catModal.classList.add('hidden');
+                    updateGameState({ gameActive: true });
+                }, 2000);
+            }
+        });
+    }
+
+    const btnCatBack = document.getElementById('btn-cat-back');
+    if (btnCatBack) {
+        btnCatBack.addEventListener('click', () => {
+            document.getElementById('cat-modal').classList.add('hidden');
+            updateGameState({ gameActive: true });
         });
     }
 

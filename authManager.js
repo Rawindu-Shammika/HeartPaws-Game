@@ -7,7 +7,8 @@ import {
     createUserWithEmailAndPassword,
     signInWithPopup,
     GoogleAuthProvider,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 import { showMainMenu } from './uiManager.js';
@@ -44,6 +45,17 @@ export async function loginUser(loginIdentifier, loginPassword) {
         } else {
             alert("Login failed! Please check your credentials: " + error.message);
         }
+    }
+}
+
+// Theme 3/4: Leveraging Firebase's SMTP distributed service for secure identity recovery.
+export async function resetPassword(username) {
+    const email = username.includes('@') ? username : username + '@heartpaws.game';
+    try {
+        await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+        console.error("Password reset error", error);
+        throw error;
     }
 }
 
@@ -136,7 +148,7 @@ export async function checkContinueAvailability() {
             const data = userDoc.data();
 
             if (data.highestUnlockedLevel && data.highestUnlockedLevel > 1) {
-                // Fix: removed the reassignment because it was breaking the state. Relying on local state now.
+                
                 document.getElementById('btn-continue').classList.remove('hidden');
             }
         }

@@ -1,6 +1,6 @@
 /* AI-assisted generation used as per university guidelines */
 
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
 
 /* CSS Variables for Low Coupling */
 :root {
@@ -217,7 +217,7 @@ body {
 
 @keyframes float-down {
     0% {
-        transform: translateY(-10vh) translateX(0) scale(0.5) rotate(0deg);
+        transform: translateY(-10vh) translateX(0) scale(0.5);
         opacity: 0;
     }
 
@@ -226,17 +226,17 @@ body {
     }
 
     25% {
-        transform: translateY(25vh) translateX(-30px) scale(0.8) rotate(-15deg);
+        transform: translateY(25vh) translateX(-30px) scale(0.8);
         opacity: 0.9;
     }
 
     50% {
-        transform: translateY(50vh) translateX(20px) scale(1) rotate(15deg);
+        transform: translateY(50vh) translateX(20px) scale(1);
         opacity: 0.9;
     }
 
     75% {
-        transform: translateY(75vh) translateX(-25px) scale(1.2) rotate(-10deg);
+        transform: translateY(75vh) translateX(-25px) scale(1.2);
         opacity: 0.9;
     }
 
@@ -245,7 +245,7 @@ body {
     }
 
     100% {
-        transform: translateY(105vh) translateX(30px) scale(1.5) rotate(20deg);
+        transform: translateY(105vh) translateX(30px) scale(1.5);
         opacity: 0;
     }
 }
@@ -298,6 +298,35 @@ body {
     height: 28px;
     margin-right: 2px;
     /* Visual optical alignment */
+}
+
+/* Cute Cat Mute Button */
+.cute-mute-btn {
+    position: absolute;
+    top: 100px;
+    left: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--light-beige);
+    border: 5px solid var(--cute-orange);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    font-size: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.cute-mute-btn:hover {
+    transform: scale(1.1);
+    background: white;
+}
+
+.cute-mute-btn:active {
+    transform: scale(0.95);
 }
 
 /* Global Mute Button */
@@ -358,22 +387,14 @@ body {
     color: white;
     padding: 15px 80px;
     border-radius: 50px;
-    box-shadow: 0 6px 0 #ff1e38, 0 10px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 0 #ff1e38, 0 10px 15px rgba(0, 0, 0, 0.3);
     text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-    font-family: 'Quicksand', 'Fredoka', sans-serif;
-    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
-}
-
-.red-pill:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 9px 0 #ff1e38, 0 13px 20px rgba(0, 0, 0, 0.5);
-    filter: brightness(1.1);
+    transition: transform 0.1s, box-shadow 0.1s;
 }
 
 .red-pill:active {
     transform: translateY(6px);
     box-shadow: 0 0 0 #ff1e38, 0 4px 5px rgba(0, 0, 0, 0.3);
-    filter: brightness(1);
 }
 
 .grey-pill {
@@ -657,16 +678,19 @@ body {
 }
 
 /* Main Menu Screen styles */
-/* --- PRO UI UPGRADE --- */
-/* Using glassmorphism for Theme 1 (Software Design) */
+.main-menu-title {
+    margin-top: -20px;
+    /* Shift up more than usual to overlap border */
+    z-index: 20;
+    /* Keep above main frame */
+}
+
 .main-menu-frame {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: var(--dark-brown);
     border-radius: 20px;
     padding: 20px;
     width: 600px;
@@ -678,23 +702,16 @@ body {
     z-index: 10;
 }
 
-.main-menu-title {
-    position: absolute;
-    top: -25px;
-    left: 40px;
-    z-index: 20;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
 .main-menu-inner {
-    background: transparent;
+    background: var(--light-beige);
     border-radius: 15px;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
+    gap: 20px;
     position: relative;
 }
 

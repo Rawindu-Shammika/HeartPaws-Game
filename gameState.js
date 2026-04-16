@@ -36,7 +36,7 @@ export function updateGameState(updates) {
 }
 
 export function saveStateToHistory() {
-    // copy the grid so we can undo later
+    
     gameState.levelStateHistory.push({
         grid: gameState.currentLevelState.map(row => [...row]),
         x: gameState.playerPos.x,

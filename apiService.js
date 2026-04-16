@@ -11,3 +11,16 @@ export async function fetchRescueChallenge() {
         throw error;
     }
 }
+
+// Theme 3 Interoperability: Consuming CATAAS binary image stream alongside Heart API JSON data.
+export async function fetchCataasImage() {
+    try {
+        const response = await fetch("https://cataas.com/cat");
+        const blob = await response.blob();
+        const imgUrl = URL.createObjectURL(blob);
+        return imgUrl;
+    } catch (error) {
+        console.error("Error fetching cat image:", error);
+        throw error;
+    }
+}

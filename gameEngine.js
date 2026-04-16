@@ -6,7 +6,7 @@ import { updateMovesDisplay, renderGrid, updateTimerDisplay, showMainMenu } from
 import { HEART_LEVELS } from './levels.js';
 import { recordScoreToCloud } from './authManager.js';
 
-// removed loose audio state for clean AudioService integration
+// 
 
 export function loadLevel(levelIndex) {
     const heartsLayer = document.getElementById('hearts-layer');
