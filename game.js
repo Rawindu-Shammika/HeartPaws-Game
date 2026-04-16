@@ -664,35 +664,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const btnCat = document.getElementById('cat-button');
-    if (btnCat) {
-        btnCat.addEventListener('click', async () => {
-            updateGameState({ gameActive: false });
-            const catModal = document.getElementById('cat-modal');
-            const catImg = document.getElementById('cat-image');
-            const catLoading = document.getElementById('cat-loading');
+    const handleCatButtonClick = async () => {
+        const gameOverPopup = document.getElementById('game-over-popup');
+        if (gameOverPopup && !gameOverPopup.classList.contains('hidden')) {
+            gameOverPopup.classList.add('hidden');
+        }
 
-            catModal.classList.remove('hidden');
-            catImg.style.display = 'none';
-            catLoading.style.display = 'block';
-            catLoading.innerText = 'Loading...';
-
-            try {
-                const imgUrl = await fetchCataasImage();
-                catImg.src = imgUrl;
-                catImg.onload = () => {
-                    catLoading.style.display = 'none';
-                    catImg.style.display = 'block';
-                };
-            } catch (err) {
-                catLoading.innerText = 'Error loading cat :(';
-                setTimeout(() => {
-                    catModal.classList.add('hidden');
-                    updateGameState({ gameActive: true });
-                }, 2000);
+        if (gameState.timeLimit !== null && gameState.timeRemaining !== null) {
+            updateGameState({ timeRemaining: gameState.timeRemaining + 15 });
+            if (!gameState.timerInterval) {
+                TimerService.start(); 
             }
-        });
-    }
+            updateTimerDisplay(); 
+            showDifficultyMessage("Meow! +15 Seconds Added!");
+        }
+
+        updateGameState({ gameActive: false });
+        const catModal = document.getElementById('cat-modal');
+        const catImg = document.getElementById('cat-image');
+        const catLoading = document.getElementById('cat-loading');
+
+        catModal.classList.remove('hidden');
+        catImg.style.display = 'none';
+        catLoading.style.display = 'block';
+        catLoading.innerText = 'Loading...';
+
+        try {
+            const imgUrl = await fetchCataasImage();
+            catImg.src = imgUrl;
+            catImg.onload = () => {
+                catLoading.style.display = 'none';
+                catImg.style.display = 'block';
+            };
+        } catch (err) {
+            catLoading.innerText = 'Error loading cat :(';
+            setTimeout(() => {
+                catModal.classList.add('hidden');
+                updateGameState({ gameActive: true });
+            }, 2000);
+        }
+    };
+
+    const btnCat = document.getElementById('cat-button');
+    if (btnCat) btnCat.addEventListener('click', handleCatButtonClick);
+
+    const btnGameOverCat = document.getElementById('btn-game-over-cat');
+    if (btnGameOverCat) btnGameOverCat.addEventListener('click', handleCatButtonClick);
 
     const btnCatBack = document.getElementById('btn-cat-back');
     if (btnCatBack) {
